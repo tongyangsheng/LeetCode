@@ -1,67 +1,30 @@
-class Solution {
-    func isValid(_ s: String) -> Bool {
-        let count = s.count % 2
-        if count != 0 {
-            return false
-        }
-        
-        var Stack = [Character]()
-        
-        for value in s {
-            switch value {
-            case "(","{","[":
-                Stack.append(value)
-            case ")":
-                if Stack.popLast() != "(" {
-                    return false
-                }
-            case "}":
-            if Stack.popLast() != "{" {
-                return false
-            }
-            case "]":
-                if Stack.popLast() != "[" {
-                    return false
-                }
-            default:
-                break
-            }
-        }
-        
-        if Stack.count == 0 {
-            return true
-        }
-        else
-        {
-            return false
-        }
-    }
-    
-    func isValid_better(_ s: String) -> Bool {
-        
-        if s.count % 2 != 0 {
-          return false
-        }
-        
-        var Stack = [Character]()
-        let HashMap: [Character : Character] = [")":"(", "}":"{", "]":"["]
-        
-        for value in s {
-            if HashMap.values.contains(value)
-            {
-                Stack.append(value)
-            }
-            else
-            {
-                if Stack.isEmpty || Stack.popLast() != HashMap[value]
-                {
-                    return false
-                }
-            }
-        }
-        
-        return Stack.isEmpty
+public class TreeNode {
+    public var val: Int
+    public var left: TreeNode?
+    public var right: TreeNode?
+    public init(_ val: Int) {
+         self.val = val
+        self.left = nil
+        self.right = nil
     }
 }
 
-print(Solution.init().isValid_better("[()]"))
+
+class Solution {
+  func sortedArrayToBST(_ nums: [Int]) -> TreeNode? {
+    return dfs(nums, 0, nums.count - 1)
+  }
+    
+    func dfs(_ nums: [Int], _ low: Int, _ high: Int) -> TreeNode? {
+        if(low > high)
+        {
+            return nil
+        }
+        let mid = low + (high - low) / 2
+        let root: TreeNode = TreeNode.init(nums[mid])
+        root.left = dfs(nums, low, mid - 1)
+        root.right = dfs(nums, mid + 1, high)
+        return root
+    }
+}
+
